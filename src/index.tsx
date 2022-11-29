@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { DevTools, loadServer } from 'jira-dev-tool'
@@ -11,8 +11,10 @@ loadServer(() => {
   root.render(
     <React.StrictMode>
       <AppProviders>
-        <DevTools />
-        <App />
+        <Suspense fallback="loading">
+          <DevTools />
+          <App />
+        </Suspense>
       </AppProviders>
     </React.StrictMode>
   )

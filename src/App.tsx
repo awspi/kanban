@@ -6,18 +6,21 @@ import AuthenticatedApp from '@/authenticated-app'
 import './App.css'
 import ErrorBoundary from './components/error-boundray'
 import { FullPageErrorFallback } from './components/lib'
+import { BrowserRouter } from 'react-router-dom'
 
 const App = memo(() => {
   const { user } = useAuth()
   return (
     //todo
     <ConfigProvider>
-      <div className="App">
-        {/* 使用错误边界 */}
-        <ErrorBoundary fallbackRender={FullPageErrorFallback}>
-          {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-        </ErrorBoundary>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          {/* 使用错误边界 */}
+          <ErrorBoundary fallbackRender={FullPageErrorFallback}>
+            {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+          </ErrorBoundary>
+        </div>
+      </BrowserRouter>
     </ConfigProvider>
   )
 })

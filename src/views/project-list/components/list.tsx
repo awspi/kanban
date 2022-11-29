@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import { Link } from 'react-router-dom'
 import { Table } from 'antd'
 import { TableProps } from 'antd'
 import { User } from '@/types/user'
@@ -21,7 +22,10 @@ const List = memo(({ users, ...props }: ListProps) => {
         {
           title: '名称',
           dataIndex: 'name',
-          sorter: (a, b) => a.name.localeCompare(b.name)
+          sorter: (a, b) => a.name.localeCompare(b.name),
+          render(value, project) {
+            return <Link to={project.id.toString()}>{project.name}</Link>
+          }
         },
         {
           title: '部门',

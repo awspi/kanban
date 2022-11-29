@@ -5,7 +5,8 @@ import { ReactComponent as SoftwareLogo } from '@/assets/software-logo.svg'
 import { useAuth } from './context/auth-context'
 import ProjectList from './views/project-list'
 import { ButtonNoPadding, Row } from './components/lib'
-import { logout } from './auth-provider'
+import { useRoutes } from 'react-router-dom'
+import routes from './router'
 
 const AuthenticatedApp = memo(() => {
   return (
@@ -13,7 +14,8 @@ const AuthenticatedApp = memo(() => {
       <Container>
         <PageHeader />
         <Main>
-          <ProjectList />
+          {/* <ProjectList /> */}
+          {useRoutes(routes)}
         </Main>
       </Container>
     </div>
