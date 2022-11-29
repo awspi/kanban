@@ -1,53 +1,55 @@
 import React, { memo } from 'react'
-
-interface User {
-  id: string
-  name: string
-  email: string
-  title: string
-  organization: string
-}
+import { Form, Input, Select } from 'antd'
+import { User } from '@/types/user'
+import { Project } from '@/types/project'
 
 interface SearchPanelProps {
   users: User[]
-  param: {
-    name: string
-    personId: string
-  }
+  param: Partial<Pick<Project, 'name' | 'personId'>>
   setParam: (param: SearchPanelProps['param']) => void
 }
 
 const SearchPanel = memo(({ users, param, setParam }: SearchPanelProps) => {
-  console.log(param)
-  function paramChangeHandle(e: React.ChangeEvent<HTMLInputElement>) {
-    setParam({
-      ...param,
-      name: e.target.value
-    })
-  }
   return (
-    <div>
-      <input
-        type="text"
-        value={param.name}
-        onChange={(e) => {
-          setParam({
-            ...param,
-            name: e.target.value
-          })
-        }}
-      />
-      <input
-        type="text"
-        value={param.personId}
-        onChange={(e) => {
-          setParam({
-            ...param,
-            personId: e.target.value
-          })
-        }}
-      />
-    </div>
+    <Form style={{ marginBottom: '2rem' }} layout={'inline'}>
+      <Form.Item>
+        {/*setParam(Object.assign({}, param, {name:evt.target.value}))*/}
+        <Input
+          placeholder={'项目名'}
+          type="text"
+          value={param.name}
+          onChange={(e) =>
+            setParam({
+              ...param,
+              name: e.target.value
+            })
+          }
+        />
+      </Form.Item>
+      <Form.Item>
+        {/* <UserSelect
+          defaultOptionName={"负责人"}
+          value={param.personId}
+          onChange={(value) =>
+            setParam({
+              ...param,
+              personId: value,
+            })
+          }
+        /> */}
+        <Select
+          value={param.personId}
+          onChange={(value) => setParam({ ...param, personId: value })}
+        >
+          <Select.Option value={''}>负责人</Select.Option>
+          {users.map((user) => (
+            <Select.Option key={user.id} value={user.id}>
+              {user.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+    </Form>
   )
 })
 

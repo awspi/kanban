@@ -1,30 +1,41 @@
-import { useDebounce } from '@/hooks'
+import { useDebounce, useMount } from '@/hooks'
+import { cleanObject } from '@/utils'
+import { useHttp } from '@/utils/http'
 import React, { memo, useEffect, useState } from 'react'
-import { getList } from '../../api/list'
+import { Typography } from 'antd'
+import styled from '@emotion/styled'
 import List from './components/list'
 import SearchPanel from './components/search-panel'
+import { useProjects } from '@/hooks/use-projects'
+import { useUsers } from '@/hooks/use-users'
 
 const ProjectList = memo(() => {
-  const [users, setUsers] = useState([])
-
+  //* 获取用户信息
+  // useMount(()=>{
+  //   client('users').then(setUsers)
+  // })
   const [param, setParam] = useState({
     name: '',
     personId: ''
   })
-  const debounceParam = useDebounce(param, 2000)
-
-  const [list, setList] = useState([])
-
-  useEffect(() => {
-    getList().then((res: any) => setList(res))
-  }, [param])
+  const debounceParam = useDebounce(param, 500) //防抖
+  const { isLoading, error, data: list } = useProjects(debounceParam)
+  const { data: users } = useUsers(debounceParam)
 
   return (
-    <div>
-      <SearchPanel users={users} param={param} setParam={setParam} />
-      <List list={list} param={param} />
-    </div>
+    <Container>
+      <h2>项目列表</h2>
+      {/* <SearchPanel users={users||[]} param={param} setParam={setParam} /> */}
+      {error ? (
+        <Typography.Text type="danger">{error?.message}</Typography.Text>
+      ) : null}
+      <List loading={isLoading} users={users || []} dataSource={list || []} />
+    </Container>
   )
 })
 
 export default ProjectList
+
+const Container = styled.div`
+  padding: 3.2rem;
+`

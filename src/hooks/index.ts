@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const useMount = (cb: Function) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => cb(), [])
 }
 
