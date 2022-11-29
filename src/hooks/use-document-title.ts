@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 /**
  * 设置页面标题
@@ -9,20 +9,20 @@ export const useDocumentTitle = (
   title: string,
   keepOnUnmount: boolean = true
 ) => {
-  const oldTitle = document.title
-  console.log('渲染时', oldTitle)
+  //? 页面加载时 旧title
+  //? 加载后 新title
+  const oldTitle = useRef(document.title).current
 
   useEffect(() => {
     document.title = title
   }, [title])
 
+  //* 页面卸载后调用
   useEffect(() => {
-    //* 页面卸载后调用
     return () => {
       if (!keepOnUnmount) {
-        console.log('卸载时', oldTitle)
         document.title = oldTitle
       }
     }
-  })
+  }, [keepOnUnmount, oldTitle])
 }

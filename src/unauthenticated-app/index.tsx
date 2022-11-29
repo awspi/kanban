@@ -14,7 +14,7 @@ const UnauthenticatedApp = memo(() => {
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   //* 设置title
-  // useDocumentTitle('请登录以继续')
+  useDocumentTitle('请登录以继续', false)
   return (
     <Container>
       <Header />
