@@ -7,11 +7,14 @@ import Register from './register'
 import logo from '@/assets/logo.svg'
 import left from '@/assets/left.svg'
 import right from '@/assets/right.svg'
+import { useDocumentTitle } from '@/hooks/use-document-title'
 
 const UnauthenticatedApp = memo(() => {
   //是否显示注册页面
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState<Error | null>(null)
+  //* 设置title
+  // useDocumentTitle('请登录以继续')
   return (
     <Container>
       <Header />

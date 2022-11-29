@@ -8,6 +8,7 @@ import List from './components/list'
 import SearchPanel from './components/search-panel'
 import { useProjects } from '@/hooks/use-projects'
 import { useUsers } from '@/hooks/use-users'
+import { useDocumentTitle } from '@/hooks/use-document-title'
 
 const ProjectList = memo(() => {
   //* 获取用户信息
@@ -21,7 +22,7 @@ const ProjectList = memo(() => {
   const debounceParam = useDebounce(param, 500) //防抖
   const { isLoading, error, data: list } = useProjects(debounceParam)
   const { data: users } = useUsers(debounceParam)
-
+  useDocumentTitle('项目列表', false)
   return (
     <Container>
       <h2>项目列表</h2>
