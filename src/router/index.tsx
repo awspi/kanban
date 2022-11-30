@@ -3,6 +3,8 @@ import { Navigate } from 'react-router-dom'
 
 const ProjectList = React.lazy(() => import('@/views/project-list'))
 const Project = React.lazy(() => import('@/views/project'))
+const Epic = React.lazy(() => import('@/views/epic'))
+const Kanban = React.lazy(() => import('@/views/kanban'))
 
 const routes = [
   {
@@ -15,7 +17,17 @@ const routes = [
   },
   {
     path: '/projects/:projectId/*',
-    element: <Project />
+    element: <Project />,
+    children: [
+      {
+        path: 'epic',
+        element: <Epic />
+      },
+      {
+        path: 'kanban',
+        element: <Kanban />
+      }
+    ]
   }
 ]
 

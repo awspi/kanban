@@ -3,9 +3,8 @@ import { Button, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import { ReactComponent as SoftwareLogo } from '@/assets/software-logo.svg'
 import { useAuth } from './context/auth-context'
-import ProjectList from './views/project-list'
 import { ButtonNoPadding, Row } from './components/lib'
-import { useRoutes } from 'react-router-dom'
+import { useRoutes, useNavigate } from 'react-router-dom'
 import routes from './router'
 
 const AuthenticatedApp = memo(() => {
@@ -13,10 +12,7 @@ const AuthenticatedApp = memo(() => {
     <div>
       <Container>
         <PageHeader />
-        <Main>
-          {/* <ProjectList /> */}
-          {useRoutes(routes)}
-        </Main>
+        <Main>{useRoutes(routes)}</Main>
       </Container>
     </div>
   )
@@ -24,10 +20,14 @@ const AuthenticatedApp = memo(() => {
 
 const PageHeader = () => {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  function logoCLickHandle() {
+    navigate('/')
+  }
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <ButtonNoPadding type={'link'}>
+        <ButtonNoPadding type={'link'} onClick={logoCLickHandle}>
           <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
         </ButtonNoPadding>
         {/* <ProjectPopover /> */}
