@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export const useMount = (cb: Function) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => cb(), [])
 }
 
@@ -14,4 +13,18 @@ export const useDebounce = <V>(value: V, delay?: number) => {
     return () => clearTimeout(timeout)
   }, [value, delay]) //当value变化时
   return debouncedValue
+}
+
+/**
+ * 返回组件的挂载状态，如果还没挂载或者已经卸载，返回false；反之，返回true
+ */
+export const useMountedRef = () => {
+  const mountedRef = useRef(false)
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  })
+  return mountedRef
 }

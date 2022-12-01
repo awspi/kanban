@@ -2,8 +2,8 @@ import { User } from '@/types/user'
 import { cleanObject } from '@/utils'
 import { useHttp } from '@/utils/http'
 import { useEffect } from 'react'
-import { useDebounce } from '.'
-import { useAsync } from './use-async'
+import { useDebounce } from '../../../hooks'
+import { useAsync } from '../../../hooks/use-async'
 
 export const useUsers = (param?: Partial<User>) => {
   const { run, ...result } = useAsync<User[]>()

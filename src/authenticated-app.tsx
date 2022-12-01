@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { Button, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import { ReactComponent as SoftwareLogo } from '@/assets/software-logo.svg'
@@ -6,20 +6,29 @@ import { useAuth } from './context/auth-context'
 import { ButtonNoPadding, Row } from './components/lib'
 import { useRoutes, useNavigate } from 'react-router-dom'
 import routes from './router'
+import ProjectModal from './views/project-list/components/project-modal'
+import ProjectPopover from './components/project-popover'
+import UserPopover from './components/user-popover'
 
 const AuthenticatedApp = memo(() => {
+  const [modalVisible, setModalVisible] = useState(false)
+
   return (
     <div>
       <Container>
         <PageHeader />
+        <Button onClick={() => setModalVisible(true)}>modal</Button>
         <Main>{useRoutes(routes)}</Main>
+        <ProjectModal
+          open={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
       </Container>
     </div>
   )
 })
 
 const PageHeader = () => {
-  const { user, logout } = useAuth()
   const navigate = useNavigate()
   function logoCLickHandle() {
     navigate('/')
@@ -30,26 +39,33 @@ const PageHeader = () => {
         <ButtonNoPadding type={'link'} onClick={logoCLickHandle}>
           <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'} />
         </ButtonNoPadding>
-        {/* <ProjectPopover /> */}
-        {/* <UserPopover /> */}
+        <ProjectPopover />
+        <UserPopover />
       </HeaderLeft>
-      <Dropdown
-        menu={{
-          items: [
-            {
-              label: (
-                <Button type={'link'} onClick={logout}>
-                  登出
-                </Button>
-              ),
-              key: 'logout'
-            }
-          ]
-        }}
-      >
-        <a onClick={(e) => e.preventDefault()}>Hi, {user?.name}</a>
-      </Dropdown>
+      <User />
     </Header>
+  )
+}
+
+const User = () => {
+  const { user, logout } = useAuth()
+  return (
+    <Dropdown
+      menu={{
+        items: [
+          {
+            label: (
+              <Button type={'link'} onClick={logout}>
+                登出
+              </Button>
+            ),
+            key: 'logout'
+          }
+        ]
+      }}
+    >
+      <a onClick={(e) => e.preventDefault()}>Hi, {user?.name}</a>
+    </Dropdown>
   )
 }
 

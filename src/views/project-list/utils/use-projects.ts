@@ -9,8 +9,10 @@ export const useProjects = (param?: Partial<Project>) => {
   const { run, ...result } = useAsync<Project[]>()
   const client = useHttp()
   const debounceParam = useDebounce(param, 200) //防抖
+  const fetchProjects = () =>
+    client('projects', { data: cleanObject(debounceParam || {}) })
   useEffect(() => {
-    run(client('projects', { data: cleanObject(debounceParam || {}) }))
+    run(fetchProjects(), { retry: fetchProjects })
   }, [debounceParam])
   return { ...result }
 }
