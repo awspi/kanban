@@ -8,6 +8,7 @@ import logo from '@/assets/logo.svg'
 import left from '@/assets/left.svg'
 import right from '@/assets/right.svg'
 import { useDocumentTitle } from '@/hooks/use-document-title'
+import { ErrorBox } from '@/components/lib'
 
 const UnauthenticatedApp = memo(() => {
   //是否显示注册页面
@@ -22,9 +23,7 @@ const UnauthenticatedApp = memo(() => {
       <ShadowCard>
         <Title>{isRegister ? '请注册' : '请登录'}</Title>
         {/* <ErrorBox error={error} /> */}
-        {error ? (
-          <Typography.Text type="danger">{error.message}</Typography.Text>
-        ) : null}
+        {error ? <ErrorBox error={error} /> : null}
         {isRegister ? (
           <Register onError={setError} />
         ) : (

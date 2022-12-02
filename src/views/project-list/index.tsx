@@ -9,14 +9,14 @@ import { useUsers } from '@/views/project-list/utils/use-users'
 import { useDocumentTitle } from '@/hooks/use-document-title'
 import { useProjectsSearchParams } from './utils/use-projects-search-params'
 import { useProjects } from './utils/use-projects'
-import { ButtonNoPadding, Row } from '@/components/lib'
+import { ButtonNoPadding, ErrorBox, Row } from '@/components/lib'
 import { useProjectModal } from './utils/use-projects-modal'
 
 const ProjectList = memo(() => {
-  const [isVisilble, open, close] = useProjectModal()
+  const { open } = useProjectModal()
   const [param, setParam] = useProjectsSearchParams()
   const debounceParam = useDebounce(param, 500) //防抖
-  const { isLoading, error, data: list, retry } = useProjects(debounceParam) //*获取list之后 也获取retry函数
+  const { isLoading, error, data: list } = useProjects(debounceParam) //*获取list之后 也获取retry函数
   const { data: users } = useUsers(debounceParam)
   useDocumentTitle('项目列表', false)
   return (
@@ -29,12 +29,10 @@ const ProjectList = memo(() => {
         </ButtonNoPadding>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
-      {error ? (
-        <Typography.Text type="danger">{error?.message}</Typography.Text>
-      ) : null}
+      {error ? <ErrorBox error={error} /> : null}
       {/* //*refresh:当更新完成后(.then())执行retry函数 */}
       <List
-        refresh={retry}
+        // refresh={retry}
         loading={isLoading}
         users={users || []}
         dataSource={list || []}

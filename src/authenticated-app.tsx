@@ -12,7 +12,7 @@ import UserPopover from './components/user-popover'
 import { useProjectModal } from './views/project-list/utils/use-projects-modal'
 
 const AuthenticatedApp = memo(() => {
-  const [modalVisible, open, close] = useProjectModal()
+  const { projectModalOpen: modalVisible, open } = useProjectModal()
   return (
     <div>
       <Container>

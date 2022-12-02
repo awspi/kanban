@@ -18,13 +18,13 @@ interface ListProps extends TableProps<Project> {
 }
 
 const List = memo(({ users, ...props }: ListProps) => {
-  const [modalVisible, open, close] = useProjectModal()
+  //取出users 剩下的放在 props里
+  const { startEdit } = useProjectModal()
   const { mutate } = useEditProject()
   //? 柯里化
   // const pinProject=(id: number,pin: boolean)=>mutate({id,pin})
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(props.refresh)
-  //取出users 剩下的放在 props里
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
+  const editProject = (id: number) => (pin: boolean) => startEdit(id)
   return (
     <Table
       pagination={false}
@@ -80,18 +80,27 @@ const List = memo(({ users, ...props }: ListProps) => {
         },
         {
           title: '操作',
-          render() {
+          render(value, project) {
             return (
               <Dropdown
                 menu={{
                   items: [
                     {
                       label: (
-                        <Menu>
-                          <Menu.Item key={''}>items</Menu.Item>
-                        </Menu>
+                        <ButtonNoPadding
+                          type={'link'}
+                          onClick={() => editProject(project.id)}
+                        >
+                          编辑
+                        </ButtonNoPadding>
                       ),
-                      key: 'logout'
+                      key: 'edit'
+                    },
+                    {
+                      label: (
+                        <ButtonNoPadding type={'link'}>删除</ButtonNoPadding>
+                      ),
+                      key: 'delete'
                     }
                   ]
                 }}
