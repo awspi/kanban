@@ -9,8 +9,11 @@ import { useUsers } from '@/views/project-list/utils/use-users'
 import { useDocumentTitle } from '@/hooks/use-document-title'
 import { useProjectsSearchParams } from './utils/use-projects-search-params'
 import { useProjects } from './utils/use-projects'
+import { ButtonNoPadding, Row } from '@/components/lib'
+import { useProjectModal } from './utils/use-projects-modal'
 
 const ProjectList = memo(() => {
+  const [isVisilble, open, close] = useProjectModal()
   const [param, setParam] = useProjectsSearchParams()
   const debounceParam = useDebounce(param, 500) //防抖
   const { isLoading, error, data: list, retry } = useProjects(debounceParam) //*获取list之后 也获取retry函数
@@ -19,6 +22,12 @@ const ProjectList = memo(() => {
   return (
     <Container>
       <h2>项目列表</h2>
+      <Row marginBottom={2} between={true}>
+        <h1>项目列表</h1>
+        <ButtonNoPadding onClick={open} type={'link'}>
+          创建项目
+        </ButtonNoPadding>
+      </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type="danger">{error?.message}</Typography.Text>

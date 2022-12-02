@@ -1,11 +1,12 @@
 import React, { memo } from 'react'
 import { Button, Drawer } from 'antd'
-const ProjectModal = memo((props: { open: boolean; onClose: () => void }) => {
-  const { open, onClose } = props
+import { useProjectModal } from '../utils/use-projects-modal'
+const ProjectModal = memo(() => {
+  const [isVisilble, open, close] = useProjectModal()
   return (
     <Drawer
-      open={open}
-      onClose={onClose}
+      open={isVisilble}
+      onClose={close}
       title="Basic Drawer"
       placement="right"
     ></Drawer>

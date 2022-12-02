@@ -1,13 +1,15 @@
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { Table } from 'antd'
-import { TableProps } from 'antd'
+import { TableProps, Dropdown, Menu } from 'antd'
 import { User } from '@/types/user'
 import { Project } from '@/types/project'
 import dayjs from 'dayjs'
 import Pin from '@/components/pin'
 import { useUsers } from '@/views/project-list/utils/use-users'
 import { useEditProject } from '../utils/use-edit-project'
+import { useProjectModal } from '../utils/use-projects-modal'
+import { ButtonNoPadding } from '@/components/lib'
 
 /** 继承antd的props类型 */
 interface ListProps extends TableProps<Project> {
@@ -16,6 +18,7 @@ interface ListProps extends TableProps<Project> {
 }
 
 const List = memo(({ users, ...props }: ListProps) => {
+  const [modalVisible, open, close] = useProjectModal()
   const { mutate } = useEditProject()
   //? 柯里化
   // const pinProject=(id: number,pin: boolean)=>mutate({id,pin})
@@ -72,6 +75,29 @@ const List = memo(({ users, ...props }: ListProps) => {
                   ? dayjs(project.created).format('YYYY-MM-DD')
                   : '无'}
               </span>
+            )
+          }
+        },
+        {
+          title: '操作',
+          render() {
+            return (
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      label: (
+                        <Menu>
+                          <Menu.Item key={''}>items</Menu.Item>
+                        </Menu>
+                      ),
+                      key: 'logout'
+                    }
+                  ]
+                }}
+              >
+                <ButtonNoPadding type={'link'}>...</ButtonNoPadding>
+              </Dropdown>
             )
           }
         }

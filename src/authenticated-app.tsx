@@ -9,20 +9,17 @@ import routes from './router'
 import ProjectModal from './views/project-list/components/project-modal'
 import ProjectPopover from './components/project-popover'
 import UserPopover from './components/user-popover'
+import { useProjectModal } from './views/project-list/utils/use-projects-modal'
 
 const AuthenticatedApp = memo(() => {
-  const [modalVisible, setModalVisible] = useState(false)
-
+  const [modalVisible, open, close] = useProjectModal()
   return (
     <div>
       <Container>
         <PageHeader />
-        <Button onClick={() => setModalVisible(true)}>modal</Button>
+        <Button onClick={open}>modal</Button>
         <Main>{useRoutes(routes)}</Main>
-        <ProjectModal
-          open={modalVisible}
-          onClose={() => setModalVisible(false)}
-        />
+        <ProjectModal />
       </Container>
     </div>
   )

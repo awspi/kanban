@@ -3,8 +3,10 @@ import styled from '@emotion/styled'
 import { Button, Popover, Typography, List, Divider } from 'antd'
 import { useProjects } from '@/views/project-list/utils/use-projects'
 import { ButtonNoPadding } from '../lib'
+import { useProjectModal } from '@/views/project-list/utils/use-projects-modal'
 
 const ProjectPopover = memo(() => {
+  const [modalVisible, open, close] = useProjectModal()
   const { data: projects, isLoading } = useProjects()
   const pinnedProject = projects?.filter((project) => project.pin)
   const content = (
@@ -18,7 +20,9 @@ const ProjectPopover = memo(() => {
         ))}
       </List>
       <Divider />
-      <ButtonNoPadding type="link">创建项目</ButtonNoPadding>
+      <ButtonNoPadding type="link" onClick={open}>
+        创建项目
+      </ButtonNoPadding>
     </ContentContainer>
   )
   return (
