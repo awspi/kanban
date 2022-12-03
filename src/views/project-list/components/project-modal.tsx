@@ -3,10 +3,9 @@ import styled from '@emotion/styled'
 import { Button, Drawer, Spin, Form, Input } from 'antd'
 import { useProjectModal } from '../utils/use-projects-modal'
 import UserSelect from '@/components/user-select'
-import { useEditProject } from '../utils/use-edit-project'
-import { useAddProject } from '../utils/use-add-project'
 import { useProjectsQueryKey } from '../utils/use-projects-query-key'
 import { ErrorBox } from '@/components/lib'
+import { useAddProject, useEditProject } from '../utils/project'
 const ProjectModal = memo(() => {
   const {
     projectModalOpen: isVisilble,
@@ -27,8 +26,7 @@ const ProjectModal = memo(() => {
     mutateAsync,
     error,
     isLoading: mutateLoading
-  } = useMutateProject()
-  // useProjectsQueryKey()
+  } = useMutateProject(useProjectsQueryKey())
 
   const onFinish = (values: any) => {
     //可能是编辑/新建

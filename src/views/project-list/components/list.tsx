@@ -1,15 +1,17 @@
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { Table } from 'antd'
-import { TableProps, Dropdown, Menu } from 'antd'
+import { TableProps, Dropdown, Menu, Modal } from 'antd'
 import { User } from '@/types/user'
 import { Project } from '@/types/project'
 import dayjs from 'dayjs'
 import Pin from '@/components/pin'
 import { useUsers } from '@/views/project-list/utils/use-users'
-import { useEditProject } from '../utils/use-edit-project'
+
 import { useProjectModal } from '../utils/use-projects-modal'
 import { ButtonNoPadding } from '@/components/lib'
+import { useProjectQueryKey } from '../utils/use-project-query-key'
+import { useDeleteProject, useEditProject } from '../utils/project'
 
 /** 继承antd的props类型 */
 interface ListProps extends TableProps<Project> {
@@ -19,12 +21,12 @@ interface ListProps extends TableProps<Project> {
 
 const List = memo(({ users, ...props }: ListProps) => {
   //取出users 剩下的放在 props里
-  const { startEdit } = useProjectModal()
-  const { mutate } = useEditProject()
+
+  const { mutate } = useEditProject(useProjectQueryKey())
   //? 柯里化
   // const pinProject=(id: number,pin: boolean)=>mutate({id,pin})
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
-  const editProject = (id: number) => (pin: boolean) => startEdit(id)
+
   return (
     <Table
       pagination={false}
@@ -48,7 +50,7 @@ const List = memo(({ users, ...props }: ListProps) => {
           dataIndex: 'name',
           sorter: (a, b) => a.name.localeCompare(b.name),
           render(value, project) {
-            return <Link to={project.id.toString()}>{project.name}</Link>
+            return <Link to={String(project.id)}>{project.name}</Link>
           }
         },
         {
@@ -81,33 +83,7 @@ const List = memo(({ users, ...props }: ListProps) => {
         {
           title: '操作',
           render(value, project) {
-            return (
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      label: (
-                        <ButtonNoPadding
-                          type={'link'}
-                          onClick={() => editProject(project.id)}
-                        >
-                          编辑
-                        </ButtonNoPadding>
-                      ),
-                      key: 'edit'
-                    },
-                    {
-                      label: (
-                        <ButtonNoPadding type={'link'}>删除</ButtonNoPadding>
-                      ),
-                      key: 'delete'
-                    }
-                  ]
-                }}
-              >
-                <ButtonNoPadding type={'link'}>...</ButtonNoPadding>
-              </Dropdown>
-            )
+            return <More project={project} />
           }
         }
       ]}
@@ -116,3 +92,51 @@ const List = memo(({ users, ...props }: ListProps) => {
 })
 
 export default List
+
+const More = ({ project }: { project: Project }) => {
+  const { startEdit } = useProjectModal()
+  const editProject = (id: number) => (pin: boolean) => startEdit(id)
+  const { mutate: deleteProject } = useDeleteProject(useProjectQueryKey())
+  const comfirmDeleteProject = (id: number) => {
+    Modal.confirm({
+      title: '提示',
+      content: '确认删除吗?',
+      okText: '确定',
+      onOk() {
+        deleteProject({ id })
+      }
+    })
+  }
+  return (
+    <Dropdown
+      menu={{
+        items: [
+          {
+            label: (
+              <ButtonNoPadding
+                type={'link'}
+                onClick={() => editProject(project.id)}
+              >
+                编辑
+              </ButtonNoPadding>
+            ),
+            key: 'edit'
+          },
+          {
+            label: (
+              <ButtonNoPadding
+                type={'link'}
+                onClick={() => comfirmDeleteProject(project.id)}
+              >
+                删除
+              </ButtonNoPadding>
+            ),
+            key: 'delete'
+          }
+        ]
+      }}
+    >
+      <ButtonNoPadding type={'link'}>...</ButtonNoPadding>
+    </Dropdown>
+  )
+}
