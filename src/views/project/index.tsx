@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Menu } from 'antd'
 
@@ -11,6 +11,7 @@ const useRouteType = () => {
 
 const Project = memo(() => {
   const routeType = useRouteType()
+
   return (
     <Container>
       <Aside>
@@ -21,7 +22,7 @@ const Project = memo(() => {
             { label: <Link to={'epic'}>任务组</Link>, key: 'epic' }
           ]}
           selectedKeys={[routeType]}
-        ></Menu>
+        />
       </Aside>
       <Main>
         <Outlet />
@@ -47,4 +48,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 16rem 1fr;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
 `

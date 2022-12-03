@@ -6,7 +6,6 @@ import { QueryKey, useMutation, useQueryClient } from 'react-query'
 
 export const useAddProject = (queryKey: QueryKey) => {
   const client = useHttp()
-  const queryClient = useQueryClient()
   return useMutation(
     (params: Partial<Project>) =>
       client(`projects/`, {

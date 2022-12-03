@@ -16,7 +16,8 @@ const ProjectList = memo(() => {
   const { open } = useProjectModal()
   const [param, setParam] = useProjectsSearchParams()
   const debounceParam = useDebounce(param, 500) //防抖
-  const { isLoading, error, data: list } = useProjects(debounceParam) //*获取list之后 也获取retry函数
+  const { isLoading, error, data: list } = useProjects(debounceParam)
+
   const { data: users } = useUsers(debounceParam)
   useDocumentTitle('项目列表', false)
   return (

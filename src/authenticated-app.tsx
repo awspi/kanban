@@ -77,8 +77,8 @@ const Header = styled(Row)`
   z-index: 1;
 `
 const HeaderLeft = styled(Row)``
-const HeaderRight = styled.div``
 
 const Main = styled.main`
   height: calc(100vh - 6rem);
+  overflow: hidden;
 `
