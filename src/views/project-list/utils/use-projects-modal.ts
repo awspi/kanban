@@ -19,8 +19,9 @@ export const useProjectModal = () => {
   const close = () => {
     setUrlParams({ projectCreate: '', editingProjectId: '' })
   }
-  const startEdit = (id: number) =>
+  const startEdit = (id: number) => {
     setEditingProjectId({ editingProjectId: id })
+  }
   //返回tuple
   return {
     projectModalOpen: projectCreate === 'true' || Boolean(editingProjectId),

@@ -18,6 +18,8 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       [searchParams, stateKeys]
     ),
     (params: Partial<{ [key in K]: unknown }>) => {
+      console.log(params)
+
       return setSearchParams(params)
     }
   ] as const

@@ -95,7 +95,7 @@ export default List
 
 const More = ({ project }: { project: Project }) => {
   const { startEdit } = useProjectModal()
-  const editProject = (id: number) => (pin: boolean) => startEdit(id)
+  const editProject = (id: number) => () => startEdit(id)
   const { mutate: deleteProject } = useDeleteProject(useProjectQueryKey())
   const comfirmDeleteProject = (id: number) => {
     Modal.confirm({
@@ -113,10 +113,7 @@ const More = ({ project }: { project: Project }) => {
         items: [
           {
             label: (
-              <ButtonNoPadding
-                type={'link'}
-                onClick={() => editProject(project.id)}
-              >
+              <ButtonNoPadding type={'link'} onClick={editProject(project.id)}>
                 编辑
               </ButtonNoPadding>
             ),

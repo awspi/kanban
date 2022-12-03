@@ -28,11 +28,16 @@ const ProjectModal = memo(() => {
     isLoading: mutateLoading
   } = useMutateProject(useProjectsQueryKey())
 
+  const closeModal = () => {
+    form.resetFields()
+    close()
+  }
+
   const onFinish = (values: any) => {
     //可能是编辑/新建
     mutateAsync({ ...editingProject, ...values }).then(() => {
       form.resetFields()
-      close()
+      closeModal()
     })
   }
 
