@@ -13,6 +13,7 @@ import { useTasks } from './utils/task'
 import { Spin } from 'antd'
 import CreateKanban from './components/create-kanban'
 import TaskModal from './components/task-modal'
+import Drop from '@/components/drag-and-drop'
 const Kanban = memo(() => {
   useDocumentTitle('看板')
   const { data: currentProject } = useProjectInUrl()
@@ -31,12 +32,15 @@ const Kanban = memo(() => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <ColumnsContainer>
-          {kanbans?.map((kanban) => (
-            <KanbanColumn kanban={kanban} key={kanban.id} />
-          ))}
-          <CreateKanban />
-        </ColumnsContainer>
+        //todo 类型
+        <Drop type="COLUMN" direction="horizontal" droppableId="kanban">
+          <ColumnsContainer>
+            {kanbans?.map((kanban) => (
+              <KanbanColumn kanban={kanban} key={kanban.id} />
+            ))}
+            <CreateKanban />
+          </ColumnsContainer>
+        </Drop>
       )}
       <TaskModal />
     </ScreenContainer>
